@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -63,19 +62,61 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Together Assignment',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.red[400],
+      ),
       body: Obx(() => ListView.builder(
             controller: _scrollController,
             itemCount: listItemController.list.length +
                 (listItemController.isLoading.value == true ? 1 : 0),
             itemBuilder: (BuildContext context, int index) {
               if (index == listItemController.list.length) {
-                return const CircularProgressIndicator();
+                return const SizedBox(
+                  width: 50, 
+                  child: CircularProgressIndicator(),
+                );
               }
               Data listItem = listItemController.list[index];
               return ListTile(
-                leading: Image.network(listItem.imageUrl.toString()),
-                title: Text(listItem.title.toString()),
-                subtitle: Text(listItem.description.toString()),
+                title: Material(
+                  elevation: 8.0,
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.network(
+                          listItem.imageUrl.toString(),
+                          width: Get.width,
+                          height: 150,
+                          fit: BoxFit.fitHeight,
+                        ),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          listItem.title.toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        const SizedBox(height: 4.0),
+                        Text(
+                          listItem.description.toString(),
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               );
             },
           )),
